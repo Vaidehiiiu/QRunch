@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTUM BITES</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Background container with blur */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://plus.unsplash.com/premium_photo-1671221672998-bab0510cfa57?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .Images {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .Images img {
+            width: 150px;
+            height: 100px;
+            margin: 10px;
+        }
+
+        .menu-item {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .menu-item img {
+            width: 120px;
+            height: 80px;
+        }
+
+        button {
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        #book-table-btn {
+            background-color: #5cb85c;
+        }
+
+        #virtual-queue-btn {
+            background-color: #0275d8;
+        }
+
+        #upi-btn {
+            background-color: #d9534f;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #order-summary {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #order-summary li {
+            margin: 5px 0;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        #table-booking-form, #menu-items, #upi-payment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        input[type="text"], input[type="time"], input[type="number"], select {
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="content-container">
+        <div class="restaurant-header">
+            <h1>QUANTUM BITES</h1>
+        </div>
+
+        <div class="Images">
+            <img src="https://i.imgur.com/9jkWQ8G.jpeg" alt="restaurant1">
+            <img src="https://i.imgur.com/tW9kzuC.jpeg" alt="restaurant2">
+            <img src="https://i.imgur.com/qR3E8fu.jpeg" alt="restaurant3">
+            <img src="https://i.imgur.com/StUuivR.png" alt="restaurant4">
+        </div>
+
+        <h2>View Our 3D Restaurant Model</h2>
+        <iframe src="https://app.sketchup.com/share/tc/asia/0XlxVXug2HI?stoken=JyDY1dJVm48NoF0kanoM_uXFRgwyV20lkrZ7spC29GbIlgX2Aq1mgJLWPn6q-JfS&source=web" width="100%" height="600" frameborder="0" allowfullscreen></iframe>
+
+        <h2>Analytics</h2>
+        <p>Peak Time: 9-12 AM and 7-10 PM</p>
+        <p>Most Popular Item: <span id="popular-item">Caesar Salad, Chicken Wrap, Ice Cream Sundae, </span></p>
+
+        <h2>Personalized Table Booking</h2>
+        <form id="table-booking-form">
+            <label for="table-number">Choose Table Number:</label>
+            <select id="table-number">
+                <option value="1">Window Side</option>
+                <option value="2">Quiet Area</option>
+                <option value="3">Display Tables</option>
+                <option value="4">Front Side</option>
+                <option value="5">Couple Table</option>
+            </select>
+
+            <label for="booking-time">Select Time Slot:</label>
+            <input type="time" id="booking-time" required>
+
+            <button type="button" id="book-table-btn">Book Table</button>
+        </form>
+        <p id="table-booking-notification"></p>
+
+        <h2>Join Virtual Queue</h2>
+        <button id="virtual-queue-btn">Join Queue</button>
+        <p id="queue-notification"></p>
+        <p id="queue-status">Estimated wait time: <span id="wait-time">10-15</span> minutes</p>
+
+        <h2>Menu</h2>
+        <div id="menu-items">
+            <div class="menu-item">
+                <img src="https://www.cookwithmanali.com/wp-content/uploads/2015/07/Restaurant-Style-Recipe-Paneer-Tikka.jpg" alt="Paneer Tikka" />
+                <h3>Paneer Tikka</h3>
+                <p>Price: ₹250</p>
+                <label for="quantity-paneer">Quantity:</label>
+                <input type="number" id="quantity-paneer" name="quantity-paneer" min="1" max="10" value="1">
+                <button type="button" onclick="addToOrder('Paneer Tikka', 250, 'quantity-paneer')">Add to PreOrder</button>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://cdn.shopify.com/s/files/1/0274/9503/9079/files/20220211142754-margherita-9920_5a73220e-4a1a-4d33-b38f-26e98e3cd986.jpg?v=1723650067?w=1024" alt="Margherita Pizza">
+                <h3>Margherita Pizza</h3>
+                <p>Price: ₹400</p>
+                <label for="pizza-qty">Quantity:</label>
+                <input type="number" id="pizza-qty" value="1" min="1">
+                <button type="button" onclick="addToOrder('Margherita Pizza', 400, 'pizza-qty')">Add to PreOrder</button>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://www.noracooks.com/wp-content/uploads/2023/04/veggie-burgers-6-1024x1536.jpg" alt="Veggie Burger">
+                <h3>Veggie Burger</h3>
+                <p>Price: ₹250</p>
+                <label for="burger-qty">Quantity:</label>
+                <input type="number" id="burger-qty" value="1" min="1">
+                <button type="button" onclick="addToOrder('Veggie Burger', 250, 'burger-qty')">Add to PreOrder</button>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://www.keep-calm-and-eat-ice-cream.com/wp-content/uploads/2022/08/Ice-cream-sundae-hero-10.jpg" alt="Ice Cream Sundae">
+                <h3>Ice Cream Sundae</h3>
+                <p>Price: ₹150</p>
+                <label for="sundae-qty">Quantity:</label>
+                <input type="number" id="sundae-qty" value="1" min="1">
+                <button type="button" onclick="addToOrder('Ice Cream Sundae', 150, 'sundae-qty')">Add to PreOrder</button>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://www.grocery.coop/sites/default/files/NCG_Dennis_Becker_Classic_Caesar_Salad_715_x_477.jpg" alt="Caesar Salad">
+                <h3>Caesar Salad</h3>
+                <p>Price: ₹200</p>
+                <label for="salad-qty">Quantity:</label>
+                <input type="number" id="salad-qty" value="1" min="1">
+                <button type="button" onclick="addToOrder('Caesar Salad', 200, 'salad-qty')">Add to PreOrder</button>
+            </div>
+        </div>
+<!-- Drinks Section -->
+<h2>Drinks</h2>
+<div id="drink-items">
+    <div class="menu-item">
+        <img src="https://www.sharmispassions.com/wp-content/uploads/2023/08/sweet-lassi3.jpg" alt="Sweet Lassi">
+        <h3>Sweet Lassi</h3>
+        <p>Price: ₹100</p>
+        <label for="lassi-qty">Quantity:</label>
+        <input type="number" id="lassi-qty" value="1" min="1">
+        <button type="button" onclick="addToOrder('Sweet Lassi', 100, 'lassi-qty')">Add to PreOrder</button>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://www.sharmispassions.com/wp-content/uploads/2011/07/MangoLassi6.jpg" alt="Mango Lassi">
+        <h3>Mango Lassi</h3>
+        <p>Price: ₹120</p>
+        <label for="mango-lassi-qty">Quantity:</label>
+        <input type="number" id="mango-lassi-qty" value="1" min="1">
+        <button type="button" onclick="addToOrder('Mango Lassi', 120, 'mango-lassi-qty')">Add to PreOrder</button>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://cdn.tarladalal.com/members/9306/procstepimgs/orange-juice-with-manual-citrus-juicer-(1)-7-188535.jpg" alt="Fresh Orange Juice">
+        <h3>Fresh Orange Juice</h3>
+        <p>Price: ₹80</p>
+        <label for="orange-juice-qty">Quantity:</label>
+        <input type="number" id="orange-juice-qty" value="1" min="1">
+        <button type="button" onclick="addToOrder('Fresh Orange Juice', 80, 'orange-juice-qty')">Add to PreOrder</button>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Lemon Soda">
+        <h3>Lemon Soda</h3>
+        <p>Price: ₹60</p>
+        <label for="lemon-soda-qty">Quantity:</label>
+        <input type="number" id="lemon-soda-qty" value="1" min="1">
+        <button type="button" onclick="addToOrder('Lemon Soda', 60, 'lemon-soda-qty')">Add to PreOrder</button>
+    </div>
+
+    <div class="menu-item">
+        <img src="https://www.theskburger.com/wp-content/uploads/2022/08/banana-milkshake-34-290x290.jpg">
+        <h3>Vanilla Milkshake</h3>
+        <p>Price: ₹150</p>
+        <label for="milkshake-qty">Quantity:</label>
+        <input type="number" id="milkshake-qty" value="1" min="1">
+        <button type="button" onclick="addToOrder('Vanilla Milkshake', 150, 'milkshake-qty')">Add to PreOrder</button>
+    </div>
+
+    <!-- Added Tea and Coffee -->
+    <div class="menu-item">
+        <img src="https://www.thespicehouse.com/cdn/shop/articles/Chai_Masala_Tea_1200x1200.jpg?v=1606936195" alt="Masala Chai">
+        <h3>Masala Chai</h3>
+        <p>Price: ₹50</p>
+        <label for="chai-qty">Quantity:</label>
+        <input type="number" id="chai-qty" value="1" min="1">
+        <button type="button" onclick="addToOrder('Masala Chai', 50, 'chai-qty')">Add to PreOrder</button>
+  </div>
+        <h2>Order Summary</h2>
+        <ul id="order-summary"></ul>
+        <p>Total: ₹<span id="total-amount">0</span></p>
+
+        <h2>UPI Payment</h2>
+        <form id="upi-payment">
+            <label for="upi-id">Enter UPI ID:</label>
+            <input type="text" id="upi-id" placeholder="example@upi" required>
+            <button type="button" id="upi-btn">Pay Now</button>
+        </form>
+        <p id="payment-notification"></p>
+    </div>
+
+    <script>
+        let total = 0;
+        let orderItems = [];
+
+        // Book table function
+        document.getElementById('book-table-btn').addEventListener('click', function() {
+            const tableNumber = document.getElementById('table-number').value;
+            const bookingTime = document.getElementById('booking-time').value;
+            if (bookingTime) {
+                document.getElementById('table-booking-notification').textContent = Table ${tableNumber} booked for ${bookingTime}.;
+            } else {
+                document.getElementById('table-booking-notification').textContent = 'Please select a time.';
+            }
+        });
+
+        // Join virtual queue function
+        document.getElementById('virtual-queue-btn').addEventListener('click', function() {
+            document.getElementById('queue-notification').textContent = 'You have joined the queue. Thank you!';
+        });
+
+        // Add item to order function
+        function addToOrder(itemName, itemPrice, quantityId) {
+            const quantity = parseInt(document.getElementById(quantityId).value);
+            const subtotal = itemPrice * quantity;
+            total += subtotal;
+            orderItems.push({ itemName, quantity, subtotal });
+
+            // Update order summary
+            const orderSummary = document.getElementById('order-summary');
+            const newItem = document.createElement('li');
+            newItem.textContent = ${itemName} (x${quantity}) - ₹${subtotal};
+            orderSummary.appendChild(newItem);
+
+            // Update total amount
+            document.getElementById('total-amount').textContent = total;
+
+            // Reset quantity input
+            document.getElementById(quantityId).value = 1;
+        }
+
+        // UPI payment function
+        document.getElementById('upi-btn').addEventListener('click', function() {
+            const upiId = document.getElementById('upi-id').value;
+            if (upiId) {
+                document.getElementById('payment-notification').textContent = Payment of ₹${total} successful to ${upiId}.;
+                // Reset for new order
+                total = 0;
+                orderItems = [];
+                document.getElementById('order-summary').innerHTML = '';
+                document.getElementById('total-amount').textContent = total;
+                document.getElementById('upi-id').value = '';
+            } else {
+                document.getElementById('payment-notification').textContent = 'Please enter a UPI ID.';
+            }
+        });
+    </script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        .star-rating {
+            direction: rtl;
+            display: inline-block;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 30px;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating input:checked ~ label ~ label:hover {
+            color: gold;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="feedback-form">
+    <h2>Feedback</h2>
+    <form id="feedbackForm">
+        <div class="star-rating">
+            <input type="radio" id="star5" name="rating" value="5" />
+            <label for="star5">&#9733;</label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4">&#9733;</label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3">&#9733;</label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2">&#9733;</label>
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1">&#9733;</label>
+        </div>
+        <textarea placeholder="Leave your feedback here..." required></textarea>
+        <button type="submit">Submit Feedback</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("feedbackForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const rating = document.querySelector('input[name="rating"]:checked');
+        const feedback = document.querySelector('textarea').value;
+
+        if (rating) {
+            alert(Thank you for your feedback!\nRating: ${rating.value}\nComment: ${feedback});
+        } else {
+            alert("Please select a rating.");
+        }
+    });
+  </script>
+
+</body>
+</html>
